@@ -6,23 +6,30 @@
   <title>Cards Game</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    .red{
-      background-color: red;
+    .red { background-color: red; }
+    .green { background-color: green; }
+    .blue { background-color: blue; }
+    .purple { background-color: purple; }
+    .yellow { background-color: yellow; }
+    .orange { background-color: orange; }
+
+    /* Spinning effect */
+    @keyframes spin {
+      0% { transform: rotateY(0deg); }
+      100% { transform: rotateY(180deg); }
     }
-    .green{
-      background-color: green;
+
+    @keyframes spin-back {
+      0% { transform: rotateY(180deg); }
+      100% { transform: rotateY(0deg); }
     }
-    .blue{
-      background-color: blue;
+
+    .spinning {
+      animation: spin 0.3s ease-out forwards;
     }
-    .purple{
-      background-color: purple;
-    }
-    .yellow{
-      background-color: yellow;
-    }
-    .orange{
-      background-color: orange;
+
+    .spinning-back {
+      animation: spin-back 0.3s ease-out forwards;
     }
   </style>
 </head>

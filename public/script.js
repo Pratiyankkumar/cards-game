@@ -1,4 +1,3 @@
-
 let card1 = document.querySelector('.js-card1');
 let card2 = document.querySelector('.js-card2');
 let card3 = document.querySelector('.js-card3');
@@ -18,32 +17,72 @@ let playingCards = [
   card9, card10, card11, card12
 ];
 
-
-
-let bigRandomNumber = Math.round((Math.random().toFixed(2)) * 12);
 let colorArray = ['red', 'green', 'blue', 'purple', 'yellow', 'orange'];
+let shuffledColors = [];
 
-let colorCount = {
-  red: 0,
-  green: 0,
-  blue: 0,
-  purple: 0,
-  yellow: 0,
-  orange:0
+// Add each color twice to the shuffledColors array
+colorArray.forEach(color => {
+  shuffledColors.push(color);
+  shuffledColors.push(color);
+});
+
+// Shuffle the shuffledColors array
+for (let i = shuffledColors.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [shuffledColors[i], shuffledColors[j]] = [shuffledColors[j], shuffledColors[i]];
 }
 
-playingCards.forEach((value) => {
-  let randomNumber = Math.round((Math.random().toFixed(2)) * 5);
-  let randomColor = colorArray[randomNumber];
-  colorCount[randomColor]+=1
-  value.classList.add(randomColor);
+// Assign the shuffled colors to the cards
+
+let clicks = 0;
+let selectedColorArray = [];
+let selectedCard = [];
+let pairs = 0;
+document.querySelectorAll('#js-card').forEach((card, index) => {
+  card.addEventListener('click', () => {
+    if (!card.classList.contains('spinning') && !card.classList.contains('spinning-back')) {
+      card.classList.add('spinning');
+      card.classList.add(shuffledColors[index]);
+      let clickedColor = shuffledColors[index];
+      selectedColorArray.push(clickedColor);
+      selectedCard.push(card);
+      clicks += 1;
+      console.log(clicks);
+      
+      if (clicks === 2) {
+        if (selectedColorArray[0] === selectedColorArray[1]) {
+          console.log(true);
+          selectedColorArray = [];
+          selectedCard = [];
+          clicks = 0;
+          pairs+=1;
+        } else {
+          setTimeout(() => {
+            selectedCard[0].classList.add('spinning-back');
+            selectedCard[1].classList.add('spinning-back');
+            selectedCard[0].classList.remove(selectedColorArray[0]);
+            selectedCard[1].classList.remove(selectedColorArray[1]);
+            console.log(false);
+            
+            setTimeout(() => {
+              selectedCard[0].classList.remove('spinning');
+              selectedCard[1].classList.remove('spinning');
+              selectedCard[0].classList.remove('spinning-back');
+              selectedCard[1].classList.remove('spinning-back');
+              selectedColorArray = [];
+              selectedCard = [];
+              clicks = 0;
+            }, 300);
+          }, 500);
+        }
+      }
+    }
+    console.log(pairs);
+
+    if (pairs === 6) {
+      alert('You won the game')
+    }
+  })
 })
-console.log(colorCount);
 
-
-
-// document.querySelectorAll('#js-card').forEach((value) => {
-//   value.addEventListener('click', () => {
-//     value.classList.add(colorArray[randomNumber]);
-//   })
-// });
+console.log(shuffledColors);

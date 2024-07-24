@@ -34,10 +34,20 @@ for (let i = shuffledColors.length - 1; i > 0; i--) {
 
 // Assign the shuffled colors to the cards
 
+
 let clicks = 0;
 let selectedColorArray = [];
 let selectedCard = [];
 let pairs = 0;
+let wins;
+
+loadFromStorage();
+
+function loadFromStorage() {
+  wins = JSON.parse(localStorage.getItem('cardWins')) || 0;
+}
+
+
 document.querySelectorAll('#js-card').forEach((card, index) => {
   card.addEventListener('click', () => {
     if (!card.classList.contains('spinning') && !card.classList.contains('spinning-back')) {
@@ -81,8 +91,27 @@ document.querySelectorAll('#js-card').forEach((card, index) => {
 
     if (pairs === 6) {
       alert('You won the game')
+      wins+=1;
+      saveToStorage();
+      renderScore();
     }
   })
+})
+
+function renderScore() {
+  document.querySelector('.js-wins').innerHTML = `Wins: ${wins}`;
+}
+
+renderScore();
+
+
+function saveToStorage() {
+  localStorage.setItem('cardWins', JSON.stringify(wins))
+}
+
+
+document.querySelector('.js-restart').addEventListener('click', () => {
+  location.reload();
 })
 
 console.log(shuffledColors);
